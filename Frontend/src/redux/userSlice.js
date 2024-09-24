@@ -1,13 +1,14 @@
 //signup 
 import { createSlice } from "@reduxjs/toolkit"
-import {toast} from 'sonner'
 import { createAsyncThunk
  } from "@reduxjs/toolkit"
 import axios from "axios"
+import { toast } from "sonner"
+import {jwtDecode} from 'jwt-decode';
 
 export const Register = createAsyncThunk('/user/register', async(data,{rejectWithValue})=>{
     try {
-      const res = axios.post('http://localhost:3000/api/register',data)
+      const res =  await axios.post('http://localhost:3000/api/register',data)
       console.log(res.data)
       return res.data
   }
@@ -17,54 +18,66 @@ export const Register = createAsyncThunk('/user/register', async(data,{rejectWit
 
 } )
 
-export const Login = createAsyncThunk('/user/login', async(data,{rejectWithValue})=>{
-   try {
-     const res = axios.post('http://localhost:3000/api/login',data)
-     console.log(res.data)
-     return res.data
- }
-    catch (error) {
-      console.log(rejectWithValue(error))
-      return rejectWithValue(error)
-   }
+
+export const userLogin = createAsyncThunk('/user/login', async(data,{rejectWithValue})=>{
+    try {
+      const res = await axios.post('http://localhost:3000/api/login',data)
+      console.log(res.data)
+      return res.data
+  }
+     catch (error) {
+        console.log(error)
+        console.log(rejectWithValue(error))
+     return   rejectWithValue(error)
+    }
 
 } )
 
 const initialState = {
 loading : false ,
-error : null,
-token:null,
-name:null,
-role:null
+error : null ,
+token : null ,
+name : null ,
+role : null
 }
 
 const userSlice = createSlice({
-   name : "user",
-   initialState,
-   extraReducers : (builder) => {
-   builder.addCase(Register.pending, (state)=>{
-   state.loading = true ;
-   state.error = null
-}).addCase(Register.fulfilled , (state)=>{
-   state.loading = false ;
-   state.error = null
-   toast.success('User registered successfully');
-}).addCase(Register.rejected,(state,action)=>{
-   state.loading = false ;
-   state.error = action.payload
-}).addCase(userLogin.pending, (state)=>{
-   state.loading = true
-}).addCase(userLogin.fulfilled,(state,action)=>{
-   console.log(action.payload)
-   state.loading = false,
-   state.error=null;
-   toast.success("User logged in successfully");
-}).addCase(userLogin.rejected,(state,action)=>{
-   console.log(action.payload)
-   state.loading = false,
-   state.error = action.payload
-})
-   }
+    name : "user",
+    initialState,
+    extraReducers : (builder) => {
+    builder.addCase(Register.pending, (state)=>{
+    state.loading = true ;
+    state.error = null ;
+ }).addCase(Register.fulfilled , (state)=>{
+    state.loading = false ;
+    state.error = null
+    toast.success('Account created Successfully')
+ }).addCase(Register.rejected,(state,action)=>{
+    state.loading = false ;
+    state.error = action.payload
+ }).addCase(userLogin.pending, (state)=>{
+    state.loading = true
+ }).addCase(userLogin.fulfilled,(state,action)=>{
+    
+    state.loading = false 
+    const {token} = action.payload
+    const {name,role} = jwtDecode(token)
+    //update the initial state
+    state.role = role ;
+    state.token = token ;
+    state.name = name;
+    //save the token , role in localstorage
+    localStorage.setItem("token",token)
+    localStorage.setItem('role', role )
+    localStorage.setItem('name', name )
+    toast.success("Login Successfull")
+ }).addCase(userLogin.rejected ,(state,action)=>{
+    console.log(action.payload)
+    state.loading = false,
+    state.error = action.payload.response.data.message
+    toast.error(action.payload.response.data.message)
+ })
+    }
 })
 
 export default userSlice.reducer

@@ -5,6 +5,10 @@ import {Routes , Route} from 'react-router-dom'
 import {Toaster} from 'sonner';
 import {useSelector,useDispatch} from 'react-redux'
 import { increment,decrement } from "./redux/counterSlice"
+import PrivateRoute from "./components/PrivateRoute.jsx";
+import Homepage from "./pages/Homepage.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+
 export default function App() {
     
       const dispatch=useDispatch()
@@ -27,6 +31,15 @@ export default function App() {
  <Routes>
     <Route path="/register" element={<Signup/>} />
     <Route path="/login" element={<Login/>}/>
+    <Route element={<PrivateRoute allowrole={["admin"]}/>}>
+      <Route path="/" element={<Homepage/>}/>
+      <Route path="/dashboard" element={<Dashboard/>}/>
+    </Route>
+
+    <Route element={<PrivateRoute allowrole={["user"]}/>}>
+      <Route path="/" element={<Homepage/>}/>
+    </Route>
+
   </Routes>
   <Toaster position="bottom-right"/>
     </div>
