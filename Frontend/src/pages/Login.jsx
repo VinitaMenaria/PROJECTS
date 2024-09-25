@@ -4,21 +4,23 @@ import { userLogin } from '../redux/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaGoogle, FaUser, FaLock } from 'react-icons/fa';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { Link,Navigate,useNavigate,useNavigation } from 'react-router-dom';
+import { Link,Navigate,useNavigate,useNavigation,useLocation } from 'react-router-dom';
 
 function Login() {
   const { handleSubmit, register, formState: { errors } } = useForm(); 
   const dispatch = useDispatch();
   const navigate=useNavigate();
+  const location=useLocation();
+  console.log(location.pathname)
   const [showPassword, setShowPassword] = useState(false);
 
   const {role}=useSelector((state)=>state.user)
 
   useEffect(()=>{
-    if(role==='user'){
+    if(role==='user'&& location.pathname !=='/'){
       navigate('/')
     }
-    else if(role==='admin'){
+    else if(role==='admin' && location.pathname !=='/dashboard'){
       navigate('/dashboard')
     }
     },[role])
@@ -81,6 +83,7 @@ function Login() {
        
         <button
           className="flex items-center justify-center mt-5 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full"
+          onClick={()=>window.location.href="http://localhost:3000/api/auth/google"}
          
         >
           <FaGoogle className="mr-2" />

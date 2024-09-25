@@ -1,49 +1,52 @@
-import React from "react";
-import Signup from "./pages/Signup"
-import Login from "./pages/Login" 
-import {Routes , Route} from 'react-router-dom'
-import {Toaster} from 'sonner';
-import {useSelector,useDispatch} from 'react-redux'
-import { increment,decrement } from "./redux/counterSlice"
-import PrivateRoute from "./components/PrivateRoute.jsx";
-import Homepage from "./pages/Homepage.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
-
+import Signup from './pages/Signup';
+import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'sonner';
+import { useSelector, useDispatch } from 'react-redux';
+import Login from './pages/Login';
+import { increment, decrement } from './redux/counterSlice';
+import Homepage from './pages/Homepage';
+import PrivateRoute from './components/PrivateRoute';
+import Dashboard from './pages/Dashboard';
+import GoogleHandler from './components/GoogleHandler';
 export default function App() {
-    
-      const dispatch=useDispatch()
-        const {count}=useSelector((state)=>state.count
-          // console.log(state.count.count)
-)
-     
-    const handleIncrement=()=>{
-      dispatch(increment())
-    }
-    const handleDecrement=()=>{
-      dispatch(decrement())
-    }
-  
+  //to get the value
+  const dispatch = useDispatch();
+  const { count } = useSelector((state) => state.count);
+
   return (
     <div>
-       {/* <p>count:{count}</p> */}
-      {/* <button onClick={handleIncrement}>Increment</button>
-      <button onClick={handleDecrement}>Decrement</button> */}
- <Routes>
-    <Route path="/register" element={<Signup/>} />
-    <Route path="/login" element={<Login/>}/>
-    <Route element={<PrivateRoute allowrole={["admin"]}/>}>
-      <Route path="/" element={<Homepage/>}/>
-      <Route path="/dashboard" element={<Dashboard/>}/>
-    </Route>
+      <Routes>
+        <Route path="/register" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path='/auth/google/callback' element={<GoogleHandler/>}/>
+ <Route element={<PrivateRoute allowrole={['user']} />}>
+            <Route path="/" element={<Homepage />} />
+          </Route>
 
-    <Route element={<PrivateRoute allowrole={["user"]}/>}>
-      <Route path="/" element={<Homepage/>}/>
-    </Route>
 
-  </Routes>
-  <Toaster position="bottom-right"/>
+        <Route element={<PrivateRoute allowrole={['admin']} />}>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        
+         
+        </Route>
+      </Routes>
+      <Toaster position="bottom-right" />
     </div>
-)
+  );
 }
 
+//NOTE keywords in react-redux and @reduxtoolkit
+//actions => actions are the javascript object which have type and payload property
 
+//reducers => takes the previous state and returns new state
+
+//useDispatch
+//createSlice => it generally a function which manages the reducers and actions
+
+//store => store is like a container which have all the state we are using in our project
+
+//initialState => initial value of the some value which is going to change
+
+//useSelector
+//provider

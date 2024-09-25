@@ -1,40 +1,47 @@
-const express = require('express');
-const colors=require('colors');
-const app= express();
-const dbConnect=require('./db.js')
-const PORT =3000;
-const validator=require('validator')
-const errorHandler=require ('./middleware/errorhandle')
-const cors=require('cors');
-app.use(cors())
-// parse the data 
+const express = require('express') ;
+const colors = require('colors')
+const app = express() ;
+const PORT = 3000 ;
+const dbConnect = require('./db')
+const errorHandler  = require('./middleware/errorhandle')
+const passport = require('passport')
+const session = require('express-session')
+
+require('dotenv').config()
+require('./config/passportConfig')
+const cors = require('cors')
+//NOTE parse the data from the req.body
+app.use(cors()) ;
+
+//NOTE creating a session whenever login with google hit..
+app.use(session({
+  secret: 'my-secret-string',
+  resave: false,    
+  saveUninitialized: false ,  //if something is not store we donot need to create session
+  cookie: { maxAge : 1000 * 60 * 60 * 24 * 5 }
+}))
+
+//NOTE initializing the passport middleware in the express app
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(express.json());
-// Checking how validator Works
-// console.log(validator.isStrongPassword("Hello1@2",{
-//     minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1
-// }))
 
-dbConnect();
 
-// console.log(colors.yellow(validator.validate("test@email.com")))
-// app.use('/api',require('/routes/UserRoutes'))
+dbConnect() ;
 
-// global route errorHandler
 
-app.use('/api',require('./routes/UserRoutes.js'));
+app.use('/api',require('./routes/UserRoutes'))
+
+//global route handler 
 app.use((req,res,next)=>{
     res.status(404).send(`requested url ${req.url} not found`)
     next()
 })
-// Global error
-app.use(errorHandler);
 
-app.listen(PORT,()=>{
-    console.log(colors.yellow(`App is Listening on the PORT :${PORT}`));
+//global error handler middleware
+app.use(errorHandler) ;
+
+
+app.listen(PORT , ()=>{
+    console.log(colors.yellow(`App is listening on the PORT:${PORT}`))
 })
-// {
-//     name: 'vaibhav',
-//     email:'vaibhav@gmail.com',
-//     phone: '888',
-//     password:'fdsdsv'
-// }
