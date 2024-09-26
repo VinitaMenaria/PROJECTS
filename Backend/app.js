@@ -1,12 +1,11 @@
 const express = require('express') ;
 const colors = require('colors')
 const app = express() ;
-const PORT = 3000 ;
+const PORT = 3000;
 const dbConnect = require('./db')
 const errorHandler  = require('./middleware/errorhandle')
 const passport = require('passport')
 const session = require('express-session')
-
 require('dotenv').config()
 require('./config/passportConfig')
 const cors = require('cors')
@@ -18,7 +17,7 @@ app.use(session({
   secret: 'my-secret-string',
   resave: false,    
   saveUninitialized: false ,  //if something is not store we donot need to create session
-  cookie: { maxAge : 1000 * 60 * 60 * 24 * 5 }
+  cookie: { maxAge : 1000 * 60 * 60 * 24 * 30 }
 }))
 
 //NOTE initializing the passport middleware in the express app
@@ -31,6 +30,7 @@ dbConnect() ;
 
 
 app.use('/api',require('./routes/UserRoutes'))
+app.use('/api', require('./routes/productRoutes'))
 
 //global route handler 
 app.use((req,res,next)=>{

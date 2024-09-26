@@ -7,7 +7,7 @@ const PrivateRoute = ({allowrole}) => {
       if(!token){
         return <Navigate to='/login'/>
       }
-      if(allowrole.includes(role)){
+      if(!allowrole.includes(role)){
         return <Navigate to="/login"/>
       }
       return <Outlet/>

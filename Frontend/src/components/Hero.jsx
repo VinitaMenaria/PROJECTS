@@ -2,9 +2,10 @@ import React from 'react'
 import Slider from 'react-slick'
 import men from './../assets/men.png'
 import beg from './../assets/beg.png'
-import women from '../assets/women.png'
+import women from './../assets/women.png'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import './Hero.css'
 function Hero() {
 
     const  settings = {
