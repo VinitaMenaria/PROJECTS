@@ -61,7 +61,7 @@ exports.googleAuth = async(req,res) => {
   const user = req.user
   const token = jwt.sign({id : user._id , name:user.name, role:user.role} , 'this-is-my-secret-string' , {expiresIn : '30d'} )
 
-res.redirect(`http://localhost:5173/auth/google/callback?token=${token}&role=${user.role}`)
+res.redirect(`http://localhost:5173/auth/google/callback?name=${user.name}&token=${token}&role=${user.role}`)
  
   } catch (error) {
     next(error)

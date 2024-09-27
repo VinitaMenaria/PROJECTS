@@ -5,14 +5,16 @@ function GoogleHandler() {
 const location = useLocation() ;
 
 useEffect(()=>{
-    console.log(location.search)
+ console.log(location.search)
 const params = new URLSearchParams(location.search)
 console.log(params)
 const token = params.get('token')
 const role = params.get('role')
+const name = params.get('name')
 if(token && role){
     localStorage.setItem("token",token)
     localStorage.setItem('role',role)
+    localStorage.setItem('name',name)
     navigate('/')
 }
 },[navigate ,location.search])

@@ -31,7 +31,9 @@ function Signup() {
   });
 
   const onSubmit = async(data) => {
-    await dispatch(Register(data));
+    await  dispatch(Register(data));
+    navigate('/login');
+
   };
 
 
