@@ -11,7 +11,7 @@ require('./config/passportConfig')
 const cors = require('cors')
 //NOTE parse the data from the req.body
 app.use(cors()) ;
-
+app.use('/uploads' , express.static('uploads'))
 //NOTE creating a session whenever login with google hit..
 app.use(session({
   secret: 'my-secret-string',

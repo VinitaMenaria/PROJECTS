@@ -1,41 +1,42 @@
-const Product = require('../model/ProductModel')
+const Product = require('./../model/ProductModel');
 
+exports.createProduct = async (req, res, next) => {
+  try {
+    console.log(req.file);
+    const { name, price, description, stock, category, discountPercentage } =
+      req.body;
+    const image = req.file.path;
 
-exports.createProduct = async(req,res) => {
-    try {
-         const {name ,  price , category ,discountPercentage , stock , description} = req.body
-
-  const image = req.file.path
-
-const product = await Product.create({
-    name ,price ,category, discountPercentage,stock ,image,description})
-
-    if(product){
-        res.status(200).json({
-          message : 'success' ,
-          product
-        })
+    const product = await Product.create({
+      name,
+      price,
+      description,
+      stock,
+      category,
+      discountPercentage,
+      image,
+    });
+    if (product) {
+      res.status(201).json({
+        message: 'success',
+      });
     }
+  } catch (error) {
+    next(error);
+  }
+};
 
-    } catch (error) {
-       res.status(500).send(error) 
-    }
- 
-  
-}
 
 exports.getProduct = async(req,res)=>{
-    try {
-      const product = await Product.find().populate('category')
-      
-      if(product){
+try {
+    const product = await Product.find();
+    if(product){
         res.status(200).json({
+            length : product.length,
             product
         })
-      }
-    } catch (error) {
-        res.status(500).json({
-            error
-        })
     }
+} catch (error) {
+    next(error)
+}
 }
