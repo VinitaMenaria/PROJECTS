@@ -28,10 +28,24 @@ const cartSlice = createSlice({
         }
         state.totalQuantity++ ,
         state.totalPrice += newItem.discountPrice
+        },
+        removeItems : (state,action) => {
+            const itemID = action.payload ;
+            const existingItem = state.items.find((item) => item._id === itemID)
+
+            if(existingItem.quantity === 1){
+                state.items = state.items.filter((item)=> item._id !== newID)
+            }else {
+                existingItem.quantity--
+            }
+           state.totalQuantity--
+           state.totalPrice -= existingItem.discountPrice
         }
       
     }
 })
 
-export const {addToCart} = cartSlice.actions
+
+
+export const {addToCart , removeItems} = cartSlice.actions
 export default cartSlice.reducer
