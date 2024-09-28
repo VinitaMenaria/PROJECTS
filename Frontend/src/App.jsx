@@ -20,19 +20,19 @@ export default function App() {
       <Routes>
         <Route path="/register" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path='/auth/google/callback' element={<GoogleHandler/>}/>
- <Route element={<PrivateRoute allowrole={['user']} />}>
-            <Route path="/" element={<Homepage />} />
+        <Route path='/auth/google/callback' element={<GoogleHandler />} />
+        <Route element={<PrivateRoute allowrole={['user']} />}>
+          <Route path="/" element={<Homepage />} />
+        </Route>
+
+
+        <Route element={<PrivateRoute allowrole={['admin']} />}>
+
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route index element={<Product />} />
+            <Route path="products" element={<Product />} />
           </Route>
-
-
-          <Route element={<PrivateRoute allowrole={['admin']} />}>
-
-<Route path="/dashboard" element={<Dashboard />}>
-  <Route index element={<Product />} />
-  <Route path="products" element={<Product />} />
-</Route>
-</Route>
+        </Route>
 
 
       </Routes>
