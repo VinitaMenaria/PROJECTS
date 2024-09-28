@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator');
 const bcrypt =  require('bcrypt');
 const userSchema = new mongoose.Schema({
+    
      name : {
         type : String ,
         required : [true , "Name is Required"],
@@ -37,7 +38,7 @@ const userSchema = new mongoose.Schema({
      role : {
         type : String ,
        enum : ['admin' , 'user'] ,
-       default : 'admin' 
+       default : 'user' 
      } ,
 
      googleId : {
