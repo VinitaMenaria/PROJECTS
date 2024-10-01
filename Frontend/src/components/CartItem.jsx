@@ -2,6 +2,7 @@
 import React from 'react';
 
 const CartItem = ({ item, onIncrease, onDecrease }) => {
+  console.log(item)
   return (
     <div className="flex items-center justify-between py-4 border-b">
       <div className="flex items-center">
@@ -43,7 +44,7 @@ const CartItem = ({ item, onIncrease, onDecrease }) => {
           className="ml-4 text-red-500 hover:underline"
           onClick={() => onDecrease(item.id)}
         >
-          ×
+          
         </button>
       </div>
     </div>
