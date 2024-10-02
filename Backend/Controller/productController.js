@@ -36,7 +36,7 @@ exports.getProduct = async (req, res) => {
       });
     }
   } catch (error) {
-    next(eror);
+    next(error);
   }
 };
 
