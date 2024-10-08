@@ -1,15 +1,15 @@
-const { default: mongoose } = require("mongoose")
+const mongoose = require('mongoose');
+const colors = require('colors')
+require('dotenv').config()
 
-const colors=require('colors');  // For customize colors in console
 
+const dbConnect = async() => {
+  try {
+    const connection = await mongoose.connect(`${process.env.MONGODB_URI}`);
+    console.log(colors.blue('Connection Successfull'))
+  } catch (error) {
+    console.log(colors.red(error))
+  }
+};
 
-const dbConnect= async()=>{
-    try {
-        const connection = await mongoose.connect('mongodb://127.0.0.1:27017/Ecommerce');
-        console.log(colors.blue("Successful Connection.."))
-    } catch (error) {
-        console.log(colors.red(error));
-    }
-}
-
-module.exports = dbConnect;
+module.exports = dbConnect ;
